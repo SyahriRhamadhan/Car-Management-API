@@ -7,7 +7,9 @@ const router = express.Router();
 const prefix = "/v1/api/";
 
 router.post(prefix + 'register-member', Register);
-router.post(prefix + 'login', Login);
+router.post(prefix + 'login-superadmin', Login);
+router.post(prefix + 'login-admin', Login);
+router.post(prefix + 'login-member', Login);
 router.delete(prefix +'logout', Logout);
 
 router.get(prefix + 'token', refreshToken);
