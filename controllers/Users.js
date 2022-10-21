@@ -3,9 +3,15 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
  
 export const getUsers = async(req, res) => {
+  if(req.user.role !== "admin" && req.user.role !== "superadmin") {
+    return res.status(400).json({
+        success: false,
+        message: "Kamu gak bisa melihat user dengan role member",
+    });
+  }
     try {
         const users = await Users.findAll({
-            attributes:['id','name','email']
+            attributes:['id','name','email', 'role']
         });
         res.json(users);
     } catch (error) {
@@ -23,7 +29,7 @@ export const Register = async(req, res) => {
             name: name,
             email: email,
             password: hashPassword,
-            role: role
+            role: "member"
         });
         res.json({msg: "Register Berhasil"});
     } catch (error) {
@@ -128,7 +134,7 @@ export const RegisterAdmin = async(req,res) => {
             name: name,
             email: email,
             password: hashPassword,
-            role: role
+            role: "admin"
         });
         res.json({msg: "Register Admin Berhasil"});
     } catch (error) {

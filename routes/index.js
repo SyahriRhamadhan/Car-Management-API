@@ -6,7 +6,7 @@ import {  getCars,getCarsById,createCars,updateCars,deleteCars } from "../contro
 const router = express.Router();
 const prefix = "/v1/api/";
 
-router.post(prefix + 'register', Register);
+router.post(prefix + 'register-member', Register);
 router.post(prefix + 'login', Login);
 router.delete(prefix +'logout', Logout);
 

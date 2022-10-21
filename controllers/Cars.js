@@ -46,7 +46,7 @@ export const updateCars = async(req, res) => {
     if(req.user.role !== "admin" && req.user.role !== "superadmin") {
         return res.status(400).json({
             success: false,
-            message: "Kamu gak bisa nambah mobil dengan role member",
+            message: "Kamu gak bisa update data mobil dengan role member",
         });
     }
         try {
@@ -73,7 +73,7 @@ export const deleteCars = async(req, res) => {
     if(req.user.role !== "admin" && req.user.role !== "superadmin") {
         return res.status(400).json({
             success: false,
-            message: "Kamu gak bisa nambah mobil dengan role member",
+            message: "Kamu gak bisa menghapus data mobil",
         });
     }
     const parsedDataProfile = JSON.parse(JSON.stringify(dataBeforeDelete));
