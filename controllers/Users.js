@@ -77,7 +77,6 @@ export const Login = async(req, res) => {
     }
 }
 export const Whoami = async (req, res) => {
-    if(!Users) return res.status(404).json({msg: "User tidak ditemukan"});
     try {
       const currentUser = req.user;
       res.status(200).json(currentUser)
