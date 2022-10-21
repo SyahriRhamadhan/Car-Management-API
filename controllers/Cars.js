@@ -18,8 +18,13 @@ export const getCarsById = async(req, res) => {
 }
 
 export const createCars = async(req, res) => {
-    const { name, harga, role} = req.body;
-    if(role !== "admin" || role !=="superadmin") return res.status(400).json({msg: "Tidak dapat mengakses konten ini kamu bukan admin"});
+    const { name, harga,size} = req.body;
+    if(req.user.role !== "admin" && req.user.role !== "superadmin") {
+        return res.status(400).json({
+            success: false,
+            message: "Kamu gak bisa nambah mobil dengan role member",
+        });
+    }
     try {
         await Cars.create({
             name: name,
@@ -28,7 +33,7 @@ export const createCars = async(req, res) => {
         });
         return res.status(200).json({
             success: true,
-            message: "Buku Berhasil ditambahkan",
+            message: "Mobil Berhasil ditambahkan",
         });
     } catch (error) {
         console.log(error);
@@ -37,8 +42,13 @@ export const createCars = async(req, res) => {
 
 export const updateCars = async(req, res) => {
     const { id } = req.params;
-    const { name, harga, role} = req.body;
-    if(role !== "admin" || role !=="superadmin") return res.status(400).json({msg: "Tidak dapat mengakses konten ini kamu bukan admin"});
+    const { name, harga, size} = req.body;
+    if(req.user.role !== "admin" && req.user.role !== "superadmin") {
+        return res.status(400).json({
+            success: false,
+            message: "Kamu gak bisa nambah mobil dengan role member",
+        });
+    }
         try {
             await Cars.update(
                 { name: name, harga: harga, size: size },
@@ -48,7 +58,7 @@ export const updateCars = async(req, res) => {
             );
             return res.status(200).json({
                 success: true,
-                message: "Buku Berhasil diupdate",
+                message: "Cars Berhasil diupdate",
             });
         } catch (error) {
             console.log(error);
@@ -60,7 +70,12 @@ export const deleteCars = async(req, res) => {
     const dataBeforeDelete = await Cars.findOne({
     where: { id: id },
     });
-// if(tokenUser.role !="superadmin"){res.json()}
+    if(req.user.role !== "admin" && req.user.role !== "superadmin") {
+        return res.status(400).json({
+            success: false,
+            message: "Kamu gak bisa nambah mobil dengan role member",
+        });
+    }
     const parsedDataProfile = JSON.parse(JSON.stringify(dataBeforeDelete));
 
     if (!parsedDataProfile) {
