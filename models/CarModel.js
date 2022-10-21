@@ -9,7 +9,10 @@ const Cars = db.define('cars',{
     },
     harga:{
         type: DataTypes.STRING
-    }
+    },
+    size:{
+        type: Sequelize.STRING
+  }
 },{
     freezeTableName:true
 });

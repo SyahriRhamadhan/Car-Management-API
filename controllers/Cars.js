@@ -4,7 +4,7 @@ import Users from "../models/UserModel.js";
 
 export const getCars = async(req, res) => {
         const cars = await Cars.findAll({
-            attributes:['id','name','harga','userId']
+            attributes:['id','name','harga','size']
         });
         res.json(cars);
 }
@@ -23,7 +23,8 @@ export const createCars = async(req, res) => {
     try {
         await Cars.create({
             name: name,
-            harga: harga
+            harga: harga,
+            size: size
         });
         return res.status(200).json({
             success: true,
@@ -40,7 +41,7 @@ export const updateCars = async(req, res) => {
     if(role !== "admin" || role !=="superadmin") return res.status(400).json({msg: "Tidak dapat mengakses konten ini kamu bukan admin"});
         try {
             await Cars.update(
-                { name: name, harga: harga },
+                { name: name, harga: harga, size: size },
                 {
                 where: { id: id},
                 }

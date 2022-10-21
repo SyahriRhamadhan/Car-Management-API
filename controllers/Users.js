@@ -82,7 +82,6 @@ export const Whoami = async (req, res) => {
       res.status(200).json(currentUser)
     } catch (error) {
       console.log(error)
-      
     }
 }
 
@@ -106,20 +105,21 @@ export const Logout = async(req, res) => {
 }
 
 export const RegisterAdmin = async(req,res) => {
-    const { name, email, password, confPassword, role } = req.body;
-    console.log(req.body)
+  const { name, email, password, confPassword, role } = req.body;
+  if(req.user.role !== "admin" && req.user.role !== "superadmin") {
+      return res.status(400).json({
+          success: false,
+          message: "Kamu gak bisa nambah admin dengan role member",
+      });
+  }
+  
+  console.log(req.body)
 
-    const tokenUser = req.user;
-    console.log(tokenUser)
+  const tokenUser = req.user;
+  console.log(tokenUser)
+    if(password !== confPassword) return res.status(400).json({msg: "Password dan Confirm Password tidak cocok"});
 
-    if(role !== "admin" || role !=="superadmin") return res.status(400).json({
-      success: false,
-      msg: "Tidak dapat mengakses konten ini kamu bukan admin"});
-    if(password !== confPassword) return res.status(400).json({
-      success: false,
-      msg: "Password dan Confirm Password tidak cocok"});
-
-   // handle hanya boleh register kalau rolemu superadmin
+  //  handle hanya boleh register kalau rolemu superadmin
 
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
