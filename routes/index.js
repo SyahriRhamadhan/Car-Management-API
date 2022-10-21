@@ -12,7 +12,7 @@ router.delete(prefix +'logout', Logout);
 
 router.get(prefix + 'token', refreshToken);
 
-router.get(prefix + 'whoami',verifyToken, Whoami)
+router.get(prefix + 'current-user',verifyToken, Whoami)
 
 // endpoint untuk tambah admin yang bisa hanya superadmin
 router.post(prefix + 'registrasi-admin', verifyToken, RegisterAdmin);

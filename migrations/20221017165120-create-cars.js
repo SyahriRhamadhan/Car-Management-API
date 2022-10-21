@@ -18,6 +18,12 @@ module.exports = {
       size:{
         type: Sequelize.STRING
       },
+      createBy:{
+        type: Sequelize.STRING
+      },
+      updateBy:{
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

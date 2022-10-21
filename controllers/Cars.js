@@ -4,12 +4,18 @@ import Users from "../models/UserModel.js";
 
 export const getCars = async(req, res) => {
         const cars = await Cars.findAll({
-            attributes:['id','name','harga','size']
+            attributes:['id','name','harga','size','createBy','updateBy', 'createdAt', 'updatedAt']
         });
         res.json(cars);
 }
 
 export const getCarsById = async(req, res) => {
+    if(req.user.role !== "admin" && req.user.role !== "superadmin") {
+        return res.status(400).json({
+            success: false,
+            message: "Kamu gak bisa akses ini dengan role member",
+        });
+    }
     const { id } = req.params;
     const cars = await Cars.findOne({
         where: { id: id },
@@ -29,7 +35,9 @@ export const createCars = async(req, res) => {
         await Cars.create({
             name: name,
             harga: harga,
-            size: size
+            size: size,
+            createBy: req.user.name,
+            updateBy: req.user.name
         });
         return res.status(200).json({
             success: true,
@@ -51,7 +59,7 @@ export const updateCars = async(req, res) => {
     }
         try {
             await Cars.update(
-                { name: name, harga: harga, size: size },
+                { name: name, harga: harga, size: size, updateBy:  req.user.name},
                 {
                 where: { id: id},
                 }

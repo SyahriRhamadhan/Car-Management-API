@@ -3,15 +3,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
  
 export const getUsers = async(req, res) => {
-  if(req.user.role !== "admin" && req.user.role !== "superadmin") {
-    return res.status(400).json({
-        success: false,
-        message: "Kamu gak bisa melihat user dengan role member",
-    });
-  }
+  
     try {
         const users = await Users.findAll({
-            attributes:['id','name','email', 'role']
+            attributes:['id','name','email', 'role','createdAt','updatedAt']
         });
         res.json(users);
     } catch (error) {
